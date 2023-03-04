@@ -7,6 +7,23 @@
     <title>Proyecto Final - Carrito de compras</title>
 </head>
 <body >
-    <script src="miarchivo.js"></script>
+  <h1>Catálogo de productos</h1>
+  <ul id="lista-producto">
+  </ul>
+  <h2>Carrito de compras</h2>
+  <ul id="lista-carrito">
+  </ul>
+  <p><span id = "total"></span></p>
+  <p><span id = "promedio"></span></p>
+  <p></p><span id = "maximo"></span></p>
+  <p></p><span id = "minimo"></span></p>
+
+  <button onclick="vaciarCarrito()">Vaciar Carrito</button>
+  <h2>Productos baratos</h2>
+  <button onclick="filtrarProductos()">Filtrar productos </button>
+  <label>Precio menor a: </label><input id="filtro" type="number" min="1" value="20">
+  <ul id="lista-filtrada"> 
+  </ul>
+  <script src="miarchivo.js"></script>
   </body>
 </html>

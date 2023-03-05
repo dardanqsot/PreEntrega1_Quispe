@@ -54,6 +54,10 @@ const actualizarCarrito = () => {
   const listaCarrito = document.getElementById('lista-carrito');
   let total = 0;
   listaCarrito.innerHTML = '';
+
+  // obtener el carrito del almacenamiento local o inicializarlo
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
   carrito.forEach(item => {
     const li = document.createElement('li');
     li.textContent = item.producto.nombre + ' x ' + item.cantidad + ' - $' + (item.producto.precio * item.cantidad).toFixed(2);
@@ -63,6 +67,7 @@ const actualizarCarrito = () => {
   if(carrito.length > 0) {
     document.getElementById('total').textContent = 'Total: $' + total.toFixed(2);
     document.getElementById('promedio').textContent = 'Promedio: $' + (total / carrito.length).toFixed(2);
+    //Uso de Spread para hallar el maxímo y mínimo 
     document.getElementById('maximo').textContent = 'Máximo: $' + Math.max(...carrito.map(item => item.producto.precio * item.cantidad)).toFixed(2);
     document.getElementById('minimo').textContent = 'Mínimo. $' + Math.min(...carrito.map(item => item.producto.precio * item.cantidad)).toFixed(2);
   }
@@ -82,6 +87,9 @@ const agregarAlCarrito = (id, cantidad) => {
   } else {
     carrito.push({ producto, cantidad: parseInt(cantidad) });
   }
+
+  // guardar el carrito en el almacenamiento local
+  localStorage.setItem("carrito", JSON.stringify(carrito));
   actualizarCarrito();
   console.log('Producto agregado al carrito:', producto.nombre);
   console.log('Carrito:', carrito);
@@ -105,6 +113,7 @@ const filtrarProductos = () => {
 
 
 const vaciarCarrito = () => {
+  localStorage.removeItem("carrito");
   carrito = [];
   document.getElementById('total').textContent = '';
   document.getElementById('promedio').textContent = '';
@@ -113,7 +122,20 @@ const vaciarCarrito = () => {
   actualizarCarrito();
 }
 // Mostrar los productos del catálogo
-mostrarProductos();
+const iniciar = () => {
+  // Verificar si el usuario ha iniciado sesión
+  if (!sessionStorage.getItem("logged")) {
+      window.location.replace("login.html");
+    return;
+  }
+  mostrarProductos();
+  actualizarCarrito();
+}
 
+const cerrarSesion = () => {
+  sessionStorage.clear();
+  localStorage.removeItem('carrito');
+  window.location.href = 'login.html';
+}
 
-
+iniciar();

@@ -19,6 +19,16 @@ const catalogo = [
 //Uso de arrar con scope global
 let carrito = [];
 
+console.log("ABCCCCC:");
+//Llamada a API con Fetch
+fetch('https://fakestoreapi.com/products')
+  .then(response => response.json())
+  .then(products => {
+    // aquí puedes hacer lo que necesites con los datos de los productos
+    console.log(products);
+  })
+  .catch(error => console.error(error));
+
 // Funcion para mostar productos en el HTML
 const mostrarProductos = () => {
   console.log("en mostrar producto!!!");

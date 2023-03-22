@@ -1,0 +1,55 @@
+/* Estilos para los botones */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Estilos para la lista de productos */
+  #lista-producto {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  #lista-producto li {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-width: 200px;
+    text-align: center;
+  }
+  
+  #lista-producto li input {
+    margin: 5px;
+  }
+  
+  /* Estilos para la lista de carrito */
+  #lista-carrito {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #lista-carrito li {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Estilos para los totales */
+  #totales {
+    margin-top: 20px;
+  }
+  
+  #totales div {
+    margin-bottom: 10px;
+  }

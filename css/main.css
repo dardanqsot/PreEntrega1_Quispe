@@ -23,7 +23,7 @@ button {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    min-width: 200px;
+    max-width: 300px;
     text-align: center;
   }
   
@@ -31,6 +31,12 @@ button {
     margin: 5px;
   }
   
+  #lista-producto li img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
   /* Estilos para la lista de carrito */
   #lista-carrito {
     list-style-type: none;

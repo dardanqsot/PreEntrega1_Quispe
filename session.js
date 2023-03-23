@@ -9,8 +9,18 @@ function login(event) {
     // Verificamos si las credenciales son correctas
     if (username === "user" && password === "coder") {
       // Si son correctas, redirigimos a la página del carrito
-      sessionStorage.setItem("logged", true);
-      window.location.replace("index.html");
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Bienvenido!',
+        showConfirmButton: false,
+        timer: 1000
+      })  
+      .then(() => {
+        sessionStorage.setItem("logged", true);
+        window.location.replace("index.html");
+      });
+
     } else {
       // Si no son correctas, mostramos un mensaje de error
       const error = document.getElementById("error-message");

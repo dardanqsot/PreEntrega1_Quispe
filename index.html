@@ -6,13 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto Final - Carrito de compras</title>
     <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.1/build/global/luxon.min.js"></script>
 </head>
 <body >
   <h1>Catálogo de productos</h1>  
+  <h3>Fecha actual</h3>
+  <p>Fecha: <span id="fecha-actual"></span></p>
   <button onclick="cerrarSesion()">Cerrar sesión</button>
-
-  <ul id="lista-producto">
-  </ul>
   <h2>Carrito de compras</h2>
   <ul id="lista-carrito">
   </ul>
@@ -26,6 +28,8 @@
   <button onclick="filtrarProductos()">Filtrar productos </button>
   <label>Precio menor a: </label><input id="filtro" type="number" min="1" value="20">
   <ul id="lista-filtrada"> 
+  </ul>
+  <ul id="lista-producto">
   </ul>
   <script src="miarchivo.js"></script>
   </body>

@@ -1,61 +1,88 @@
 class Producto {
-  constructor(id, nombre, precio) {
+  constructor(id, title, price, description, category, image, rating) {
     this.id = id;
-    this.nombre = nombre;
-    this.precio = precio;
+    this.title = title;
+    this.price = price;
+    this.description = description;
+    this.category = category;
+    this.image = image;
+    this.rating = rating;
   }
 }
-
 // Creación del catálogo de productos
 
-const catalogo = [
-  new Producto(1, 'Camisa', 12.90),
-  new Producto(2, 'Pantalón', 20.99),
-  new Producto(3, 'Zapatos', 30.49),
-  new Producto(4, 'Polera', 15.99),
-  new Producto(5, 'Casaca', 40.99)
-];
+let catalogo = [];
 
 //Uso de arrar con scope global
 let carrito = [];
 
-console.log("ABCCCCC:");
+
 //Llamada a API con Fetch
-fetch('https://fakestoreapi.com/products')
-  .then(response => response.json())
-  .then(products => {
-    // aquí puedes hacer lo que necesites con los datos de los productos
-    console.log(products);
-  })
-  .catch(error => console.error(error));
+let productos;
+
+
+const listaProductosApi = [];
 
 // Funcion para mostar productos en el HTML
 const mostrarProductos = () => {
   console.log("en mostrar producto!!!");
-  const listaProductos = document.getElementById('lista-producto');
-  let indice = 0;
-  catalogo.forEach(producto => {
-    indice++;
-    console.log("en FOR EACH!!!");
-    const li = document.createElement('li');
-    const textoLi = document.createTextNode(producto.nombre + ' - $' + producto.precio.toFixed(2));
-    const cantidadInput = document.createElement("input");
-    cantidadInput.type = "number";
-    cantidadInput.className = "cantidad-producto";
-    cantidadInput.min = "1";
-    cantidadInput.value = "1";
+  fetch("https://fakestoreapi.com/products")
+  .then(response => response.json())
+  .then(data => {
 
-    const button = document.createElement('button');
-    button.textContent = 'Agregar al carrito';
-    button.onclick = function() {
-      var cantidad = this.previousSibling.value;
-      agregarAlCarrito(producto.id, cantidad);
-    };
-    li.appendChild(textoLi);
-    li.appendChild(cantidadInput);
-    li.appendChild(button);
-    listaProductos.appendChild(li);
+    data.forEach(producto => {
+      const { id, title, price, description, category, image, rating } = producto;
+      const nuevoProducto = new Producto(id, title, price, description, category, image, rating);
+      listaProductosApi.push(nuevoProducto);
+    });
+    catalogo = listaProductosApi;
+    const listaProductos = document.getElementById('lista-producto');
+    catalogo.forEach(producto => {
+      console.log("en FOR EACH!!!");
+      const li = document.createElement('li');
+
+      // Crear un elemento img y asignarle la URL del atributo "image" del producto
+      const img = document.createElement('img');
+      img.src = producto.image;
+
+      const textoLi = document.createTextNode(producto.title + ' - $' + producto.price.toFixed(2));
+      const cantidadInput = document.createElement("input");
+      cantidadInput.type = "number";
+      cantidadInput.className = "cantidad-producto";
+      cantidadInput.min = "1";
+      cantidadInput.value = "1";
+  
+      const button = document.createElement('button');
+      button.textContent = 'Agregar al carrito';
+      button.onclick = function() {
+        var cantidad = this.previousSibling.value;
+        agregarAlCarrito(producto.id, cantidad);
+        Toastify({
+          text: "Producto agregado al carrito",
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+          duration: 1000,
+          close: true,
+          gravity: "bottom",
+          position: "right",
+          offset: {
+            y: 20 
+          }
+        }).showToast();
+      };
+
+      li.appendChild(img);
+      li.appendChild(textoLi);
+      li.appendChild(cantidadInput);
+      li.appendChild(button);
+      listaProductos.appendChild(li);
+    });
+    console.log("listaProductosApi: ");
+    console.log(listaProductosApi);
+  })
+  .catch(error => {
+    console.error(error);
   });
+
 };
 
 
@@ -70,16 +97,16 @@ const actualizarCarrito = () => {
 
   carrito.forEach(item => {
     const li = document.createElement('li');
-    li.textContent = item.producto.nombre + ' x ' + item.cantidad + ' - $' + (item.producto.precio * item.cantidad).toFixed(2);
+    li.textContent = item.producto.title + ' x ' + item.cantidad + ' - $' + (item.producto.price * item.cantidad).toFixed(2);
     listaCarrito.appendChild(li);
-    total += (item.producto.precio * item.cantidad);
+    total += (item.producto.price * item.cantidad);
   });
   if(carrito.length > 0) {
     document.getElementById('total').textContent = 'Total: $' + total.toFixed(2);
     document.getElementById('promedio').textContent = 'Promedio: $' + (total / carrito.length).toFixed(2);
     //Uso de Spread para hallar el maxímo y mínimo 
-    document.getElementById('maximo').textContent = 'Máximo: $' + Math.max(...carrito.map(item => item.producto.precio * item.cantidad)).toFixed(2);
-    document.getElementById('minimo').textContent = 'Mínimo. $' + Math.min(...carrito.map(item => item.producto.precio * item.cantidad)).toFixed(2);
+    document.getElementById('maximo').textContent = 'Máximo: $' + Math.max(...carrito.map(item => item.producto.price * item.cantidad)).toFixed(2);
+    document.getElementById('minimo').textContent = 'Mínimo. $' + Math.min(...carrito.map(item => item.producto.price * item.cantidad)).toFixed(2);
   }
 }
 
@@ -91,7 +118,7 @@ const agregarAlCarrito = (id, cantidad) => {
     console.error('Producto no encontrado en el catálogo');
     return;
   }
-  const productoEnCarrito = carrito.find(item => item.producto.nombre === producto.nombre);
+  const productoEnCarrito = carrito.find(item => item.producto.title === producto.title);
   if (productoEnCarrito) {
     productoEnCarrito.cantidad += parseInt(cantidad);
   } else {
@@ -101,7 +128,7 @@ const agregarAlCarrito = (id, cantidad) => {
   // guardar el carrito en el almacenamiento local
   localStorage.setItem("carrito", JSON.stringify(carrito));
   actualizarCarrito();
-  console.log('Producto agregado al carrito:', producto.nombre);
+  console.log('Producto agregado al carrito:', producto.title);
   console.log('Carrito:', carrito);
 };
 
@@ -113,26 +140,45 @@ const filtrarProductos = () => {
   console.log('filtrarProductos valor a filtrar: ' + valor);
   const listaFiltrada = document.getElementById('lista-filtrada');
   listaFiltrada.innerHTML = '';
-  const productosBaratos = catalogo.filter(producto => producto.precio < valor);
+  const productosBaratos = catalogo.filter(producto => producto.price < valor);
   productosBaratos.forEach(producto => {
     const li = document.createElement('li');
-    li.textContent = producto.nombre + ' - $' + producto.precio.toFixed(2);
+    li.textContent = producto.title + ' - $' + producto.price.toFixed(2);
     listaFiltrada.appendChild(li);
   });
 };
 
 
 const vaciarCarrito = () => {
-  localStorage.removeItem("carrito");
-  carrito = [];
-  document.getElementById('total').textContent = '';
-  document.getElementById('promedio').textContent = '';
-  document.getElementById('maximo').textContent = '';
-  document.getElementById('minimo').textContent = '';
-  actualizarCarrito();
+  Swal.fire({
+    title: "¿Esta seguro de limpiar el carrito?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: 'Sí, seguro',
+    cancelButtonText: 'No, cancelar',
+    dangerMode: true,
+  })
+  .then((confirmar) => {
+    if (confirmar.isConfirmed) {
+      localStorage.removeItem("carrito");
+      carrito = [];
+      document.getElementById('total').textContent = '';
+      document.getElementById('promedio').textContent = '';
+      document.getElementById('maximo').textContent = '';
+      document.getElementById('minimo').textContent = '';
+      actualizarCarrito();
+      Swal.fire("Carrito Limpiado", {
+        icon: "success",
+      });
+    }
+  });
+
 }
 // Mostrar los productos del catálogo
 const iniciar = () => {
+  const fechaActual = luxon.DateTime.local().toFormat('dd/MM/yyyy');
+  document.getElementById('fecha-actual').textContent = fechaActual;
+
   // Verificar si el usuario ha iniciado sesión
   if (!sessionStorage.getItem("logged")) {
       window.location.replace("login.html");
@@ -143,9 +189,24 @@ const iniciar = () => {
 }
 
 const cerrarSesion = () => {
-  sessionStorage.clear();
-  localStorage.removeItem('carrito');
-  window.location.href = 'login.html';
+  Swal.fire({
+    title: "¿Esta seguro de cerrar sesión?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: 'Sí, seguro',
+    cancelButtonText: 'No, cancelar',
+    dangerMode: true,
+  })
+  .then((confirmar) => {
+    if (confirmar.isConfirmed) {
+      sessionStorage.clear();
+      localStorage.removeItem('carrito');
+      window.location.href = 'login.html';
+      Swal.fire("Gracias por su visita", {
+        icon: "success",
+      });
+    }
+  });
 }
 
 iniciar();

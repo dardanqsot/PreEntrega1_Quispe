@@ -59,3 +59,61 @@ button {
   #totales div {
     margin-bottom: 10px;
   }
+
+  .mi-clase-personalizada .toastify-content {
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  /* nuevos estilos para los botones de cantidad */
+  .boton-aumentar {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  
+  .boton-disminuir {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  
+  .boton-quitar {
+    background-color: #555555;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+/* nuevo estilo para la cantidad actual */
+.cantidad {
+  font-weight: bold;
+  margin: 0 5px;
+}
+
+.swal-wide {
+  max-width: 400px;
+  text-align: center;
+  margin: 0 auto;
+}

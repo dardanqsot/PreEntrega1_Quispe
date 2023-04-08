@@ -14,7 +14,10 @@ function login(event) {
         icon: 'success',
         title: 'Bienvenido!',
         showConfirmButton: false,
-        timer: 1000
+        timer: 1000,
+        customClass: {
+          popup: 'swal-wide'
+        }
       })  
       .then(() => {
         sessionStorage.setItem("logged", true);
